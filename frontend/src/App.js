@@ -8,7 +8,7 @@ function App() {
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const BASE_URL = "http://127.0.0.1:8000";
+  const BASE_URL = "http://13.127.159.78:8000/";
 
   // 🔥 Upload PDF
   const uploadFile = async () => {
