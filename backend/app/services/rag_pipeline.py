@@ -1,6 +1,6 @@
 import json
 
-from regex import search
+# from regex import search
 from sklearn import tree
 from app.services.llm_service import call_llm_json, call_llm_text
 from app.services.redis_service import get_cache, set_cache
