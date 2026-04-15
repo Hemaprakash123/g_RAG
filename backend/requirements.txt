@@ -4,3 +4,5 @@ python-dotenv
 pageindex
 groq
 redis
+sentence-transformers
+torch

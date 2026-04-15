@@ -1,7 +1,13 @@
 import json
+
+from regex import search
+from sklearn import tree
 from app.services.llm_service import call_llm_json, call_llm_text
 from app.services.redis_service import get_cache, set_cache
 from app.utils.logger import logger
+from app.services.reranker import rerank
+from backend.app.main import query
+from backend.app.main import query
 
 
 # 🔥 STEP 1: COMPRESS TREE
@@ -126,23 +132,25 @@ def run_rag(query, tree,doc_id):
 
     logger.info("Processing query")
 
-    # Flatten tree
+    # Step 1: flatten
     flat_nodes = flatten_tree(tree)
 
-    # Keyword filter (major improvement)
+# Step 2: keyword filter
     filtered_nodes = keyword_filter(query, flat_nodes)
 
-    # Compress only filtered nodes
-    compressed_nodes = compress_tree(filtered_nodes)
+# 🔥 Step 3: rerank (NEW)
+    reranked_nodes = rerank(query, filtered_nodes)
 
-    # LLM retrieval
+# Step 4: compress only top nodes
+    compressed_nodes = compress_tree(reranked_nodes)
+
+# Step 5: LLM selection
     search = llm_tree_search(query, compressed_nodes)
 
     node_ids = search.get("node_list", [])
 
-    # Get full nodes
+# Step 6: final nodes
     selected_nodes = find_nodes(tree, node_ids)
-
     # Generate answer
     answer = generate_answer(query, selected_nodes)
 
