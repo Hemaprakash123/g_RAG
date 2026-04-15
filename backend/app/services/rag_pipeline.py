@@ -1,6 +1,6 @@
 import json
 from app.services.llm_service import call_llm_json, call_llm_text
-from app.services.cache import get_cache, set_cache
+from app.services.redis_service import get_cache, set_cache
 from app.utils.logger import logger
 
 
@@ -117,7 +117,7 @@ Rules:
 
 # 🔥 FINAL PIPELINE
 def run_rag(query, tree):
-    cache_key = f"{query}"
+    cache_key = f"{query.strip().lower()}"
 
     cached = get_cache(cache_key)
     if cached:
