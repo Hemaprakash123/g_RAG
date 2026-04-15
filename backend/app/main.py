@@ -69,5 +69,5 @@ def query(req: QueryRequest):
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid doc_id")
 
-    answer = run_rag(req.query, tree)
+    answer = run_rag(req.query, tree, req.doc_id)
     return {"answer": answer}

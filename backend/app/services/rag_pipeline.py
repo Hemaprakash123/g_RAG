@@ -117,7 +117,7 @@ Rules:
 
 # 🔥 FINAL PIPELINE
 def run_rag(query, tree):
-    cache_key = f"{query.strip().lower()}"
+    cache_key = f"{doc_id}:{query.strip().lower()}"
 
     cached = get_cache(cache_key)
     if cached:
